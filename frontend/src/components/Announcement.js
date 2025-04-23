@@ -85,7 +85,7 @@ const Announcement = ({ date, id, children }) => {
           location.pathname === "/admin/announcementScreen" && (
             <Grid container direction="row">
               <Divider flexItem={true} />
-              <Grid item md={6} sx={{ paddingLeft: "10%" }}>
+              <Grid item md={3.5} mt={2}>
                 <Button
                   variant="contained"
                   color="success"
@@ -130,7 +130,7 @@ const Announcement = ({ date, id, children }) => {
                   </Box>
                 </Modal>
               </Grid>
-              <Grid item md={6} sx={{ paddingLeft: "10%" }}>
+              <Grid item md={6} mt={2}>
                 <Button
                   variant="contained"
                   color="error"

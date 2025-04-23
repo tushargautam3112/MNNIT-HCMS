@@ -50,37 +50,37 @@ const ComplaintAdmin = ({ complaintData, allWorkers }) => {
 
   return (
     <div>
-      
+
       {success && (
         <Message severity="success" open={true} message="Complaint Assigned" />
       )}
       <Card
         variant="outlined"
-        sx={{marginBottom: "13px"}}
+        sx={{ marginBottom: "13px" }}
       >
         <CardContent>
           <Typography>
-            <b>Name : </b>
+            <b>Name: </b>
             {complaintData.complaintCreatorInfo.firstName}
           </Typography>
           <Typography>
-            <b>Email ID:</b>
+            <b>Email ID: </b>
             {complaintData.createdBy}
           </Typography>
           <Typography>
-            <b>Phone Number : </b>
+            <b>Phone Number: </b>
             {complaintData.complaintCreatorInfo.phoneNumber}
           </Typography>
           <Typography>
-            <b>Address : </b>
+            <b>Address: </b>
             {complaintData.complaintCreatorInfo.address}
           </Typography>
           <Typography>
-            <b>Complaint : </b>
+            <b>Complaint: </b>
             {complaintData.descriptionCustom}
           </Typography>
           <Typography>
-            <b>Department : </b>
+            <b>Department: </b>
             {complaintData.issueType}
           </Typography>
           <Box sx={{ maxWidth: 150, marginTop: "2%" }}>
@@ -105,23 +105,24 @@ const ComplaintAdmin = ({ complaintData, allWorkers }) => {
             </FormControl>
           </Box>
           <Stack direction="row" spacing={2}>
-          <Button
-            variant="contained"
-            color="success"
-            sx={{ marginLeft: "60%" }}
-            onClick={handleAssign}
-          >
-            ASSIGN
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            sx={{ marginLeft: "75%" }}
-            onClick={handleAssign}
-          >
-            MARK AS INVALID
+            <Button
+              variant="contained"
+              color="success"
+              sx={{ marginLeft: "60%" }}
+              onClick={handleAssign}
+            >
+              ASSIGN
             </Button>
-            </Stack>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ marginLeft: "75%" }}
+              width="450px"
+              onClick={handleAssign}
+            >
+              MARK AS INVALID
+            </Button>
+          </Stack>
         </CardContent>
       </Card>
     </div>

@@ -126,7 +126,7 @@ const ComplaintScreen = () => {
               fontFamily: "Arizonia",
             }}
           >
-            REGISTER A COMPLAINT
+            Register a Complaint
           </Typography>
           <RegisterComplaint />
         </Grid>

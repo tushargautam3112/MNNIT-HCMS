@@ -12,6 +12,7 @@ import AnnouncementScreen from './Screens/AnnouncementScreen';
 import ServicesScreen from './Screens/ServicesScreen'
 import AddSupervisor from "./Screens/AddSupervisor";
 import AddWorker from "./Screens/AddWorker";
+import './App.css'
 
 import UpdateProfileScreen from "./Screens/UpdateProfileScreen";
 const App = () => {

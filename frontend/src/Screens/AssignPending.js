@@ -37,7 +37,7 @@ const formContainer = css`
 const pageWrapper = css`
   min-height: 100vh;
   background: #f0f4f8;
-  padding-top: 2rem;
+  padding: 2rem 0;
 `;
 
 
