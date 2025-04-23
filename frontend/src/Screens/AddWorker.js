@@ -27,6 +27,30 @@ import UseMediaQuery from "../utils/useMediaQuery";
 import Message from "../components/Message";
 import { registerSupervisor } from "../actions/userActions.js";
 
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+const formContainer = css`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+`;
+
+const pageWrapper = css`
+  min-height: 100vh;
+  background: #f0f4f8;
+  padding-top: 2rem;
+`;
+
+const inputSpacing = { marginTop: "1rem" };
+
+
 const AddSupervisor = () => {
   const Roles = useSelector((state) => state.getRoles);
   const { roles } = Roles;
@@ -103,177 +127,118 @@ const AddSupervisor = () => {
   };
 
   return (
-    <div>
+    <div css={pageWrapper}>
       <AdminMenu />
       {loading && <Loader />}
-      {success && <Message severity="success" message="Supervisor Added" open={true}/>}
-      <Grid
-        container
-        spacing={2}
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          pt: 0,
-          width: { sm: "calc(100% - 240px)" },
-          margin: "0 0 0 17%",
-        }}
-        justify-content="center"
-        align-items="center"
-      >
-        <Grid item>
+      {success && (
+        <Message severity="success" message="Supervisor Added" open={true} />
+      )}
+      <Grid container justifyContent="center">
+        <Grid item xs={12} md={8}>
           {message && (
             <Message severity="error" message={message} open={true} />
           )}
           {error && <Message severity="error" message={error} open={true} />}
-          <div>
-            <Grid container>
-              <Grid item>
-                <form onSubmit={handleSubmit}>
-                  <Box
-                    display="flex"
-                    flexDirection={"column"}
-                    alignItems="center"
-                    justifyContent={"center"}
-                    margin="auto"
-                    marginTop={0}
-                    padding={5}
-                    pt={1}
-                    borderRadius={5}
-                    style={{ backgroundColor: "white", height: 500 }}
+  
+          <Box css={formContainer}>
+            <Typography
+              variant="h4"
+              align="center"
+              sx={{ mb: 3, color: "#3f51b5", fontWeight: 600 }}
+            >
+              Add Worker
+            </Typography>
+  
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>First Name</InputLabel>
+                    <OutlinedInput
+                      name="firstName"
+                      value={inputs.firstName}
+                      onChange={handleChange}
+                      label="First Name"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Last Name</InputLabel>
+                    <OutlinedInput
+                      name="lastName"
+                      value={inputs.lastName}
+                      onChange={handleChange}
+                      label="Last Name"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Phone Number</InputLabel>
+                    <OutlinedInput
+                      name="phoneNumber"
+                      value={inputs.phoneNumber}
+                      onChange={handleChange}
+                      label="Phone Number"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Address</InputLabel>
+                    <OutlinedInput
+                      name="address"
+                      value={inputs.address}
+                      onChange={handleChange}
+                      label="Address"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Email</InputLabel>
+                    <OutlinedInput
+                      name="email"
+                      value={inputs.email}
+                      onChange={handleChange}
+                      label="Email"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Worker Role</InputLabel>
+                    <Select
+                      name="userRole"
+                      value={inputs.userRole}
+                      onChange={handleChange}
+                      label="Worker Role"
+                    >
+                      <MenuItem value="plumber">Plumber</MenuItem>
+                      <MenuItem value="electrician">Electrician</MenuItem>
+                      <MenuItem value="carpenter">Carpenter</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
                   >
-                    <Typography
-                      variant="h4"
-                      textAlign={"center"}
-                      padding={1}
-                      sx={{
-                        color: "#283593",
-                        fontFamily: "Arizonia",
-                        marginTop: "1px",
-                      }}
-                    >
-                      Add workers
-                    </Typography>
-                    <Grid container spacing={1} sx={{ marginTop: "1%" }}>
-                      <Grid item md={6}>
-                        <FormControl
-                          item
-                          sx={{ width: 215 }}
-                          variant="outlined"
-                        >
-                          <InputLabel htmlFor="firstName">
-                            First Name
-                          </InputLabel>
-                          <OutlinedInput
-                            id="firstName"
-                            value={inputs.firstName}
-                            onChange={handleChange}
-                            inputProps={{ "aria-label": "firstName" }}
-                            label="firstName"
-                            name="firstName"
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item md={6}>
-                        <FormControl sx={{ width: 210 }} variant="outlined">
-                          <InputLabel htmlFor="lastName">Last Name</InputLabel>
-                          <OutlinedInput
-                            id="lastName"
-                            value={inputs.lastName}
-                            onChange={handleChange}
-                            inputProps={{ "aria-label": "lastName" }}
-                            label="lastName"
-                            name="lastName"
-                          />
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    <FormControl
-                      sx={{ width: "99%", marginTop: "2%" }}
-                      variant="outlined"
-                    >
-                      <InputLabel htmlFor="phoneNumber">
-                        Phone Number
-                      </InputLabel>
-                      <OutlinedInput
-                        id="phoneNumber"
-                        value={inputs.phoneNumber}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": "phoneNumber" }}
-                        label="phoneNumber"
-                        name="phoneNumber"
-                      />
-                    </FormControl>
-                    <FormControl
-                      sx={{ width: "99%", marginTop: "2%" }}
-                      variant="outlined"
-                    >
-                      <InputLabel htmlFor="address">Address</InputLabel>
-                      <OutlinedInput
-                        id="address"
-                        value={inputs.address}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": "address" }}
-                        label="address"
-                        name="address"
-                      />
-                    </FormControl>
-
-                    <FormControl
-                      sx={{ width: "99%", marginTop: "2%" }}
-                      variant="outlined"
-                    >
-                      <InputLabel htmlFor="email">Email</InputLabel>
-                      <OutlinedInput
-                        id="email"
-                        value={inputs.email}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": "email" }}
-                        label="email"
-                        name="email"
-                      />
-                    </FormControl>
-                    <FormControl
-                      sx={{ width: "99%", marginTop: "2%" }}
-                      variant="outlined"
-                    >
-                      <InputLabel htmlFor="userRole">Worker Role</InputLabel>
-                      <Select
-                        id="userRole"
-                        value={inputs.userRole}
-                        onChange={handleChange}
-                        label="userRole"
-                        name="userRole"
-                      >
-                        <MenuItem value="plumber">Plumber</MenuItem>
-                        <MenuItem value="electrician">Electrician</MenuItem>
-                        <MenuItem value="carpenter">Carpenter</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="success"
-                      sx={{ width: "99%", marginTop: "2%" }}
-                    >
-                      {loading && <Loader />}Register
-                    </Button>
-                  </Box>
-                </form>
+                    {loading && <Loader />} Register
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </div>
-        </Grid>
-        <Grid item md={6}>
-          <Grid container direction="row">
-            {/* {services && services.map(service => (<Grid item md={12} key={service.slug}>
-                            <Service serviceData={service} refresh={handleRefreshServices} />
-                        </Grid>))} */}
-          </Grid>
+            </form>
+          </Box>
         </Grid>
       </Grid>
     </div>
   );
+  
 };
 
 export default AddSupervisor;

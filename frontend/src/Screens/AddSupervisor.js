@@ -1,7 +1,4 @@
-
-
 import React, { useState, useEffect } from "react";
-import AdminMenu from "../components/adminMenu";
 import {
   Grid,
   Box,
@@ -11,128 +8,83 @@ import {
   InputLabel,
   OutlinedInput,
   Select,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { createService, getAllServices } from "../actions/servicesActions";
 import { useNavigate } from "react-router-dom";
-import { getRoles } from "../actions/userRoleActions";
-import Service from "../components/Service";
+
+import AdminMenu from "../components/adminMenu";
 import Loader from "../components/Loader";
-import { Link } from "react-router-dom";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import logo192 from "../assets/complaintLogo.jpg";
+import Message from "../components/Message";
+import { registerSupervisor } from "../actions/userActions";
 import UseMediaQuery from "../utils/useMediaQuery";
 
-import Message from "../components/Message";
-import { registerSupervisor } from "../actions/userActions.js";
-
 const AddSupervisor = () => {
-  const Roles = useSelector((state) => state.getRoles);
-  const { roles } = Roles;
-  const [success, setSuccess] = useState(false); // Added success state
-  // const { loading, services } = useSelector(state => state.getAllServices)
-
-  const { service } = useSelector((state) => state.createService);
-
-  const [open, setOpen] = React.useState(false);
-  const [department, setDepartment] = useState("");
-  const [description, setDescription] = useState("");
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const dispatch = useDispatch(); 
+  const [width] = UseMediaQuery();
 
-  const userLogin = useSelector((state) => state.userLogin);
-
-  // const { userInfo } = userLogin
-
-  const [message, setMessage] = useState("");
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, userInfo } = userRegister;
-
-  const initialInputs = {
+  const { loading, error, userInfo } = useSelector((state) => state.userRegister);
+  const [success, setSuccess] = useState(false);
+  const [inputs, setInputs] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
     address: "",
     superVisor: "",
-    userRole: "supervisor"
-  };
-
-  const [inputs, setInputs] = useState(initialInputs);
-  
+    userRole: "supervisor",
+  });
 
   const handleChange = (e) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
+    const { name, value } = e.target;
+    setInputs((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "phoneNumber" && { password: value }),
     }));
-    if(inputs.phoneNumber){
-      setInputs((prevState) => ({
-        ...prevState,
-        'password': inputs.phoneNumber,
-      }));
-    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(registerSupervisor(
+      inputs.firstName,
+      inputs.lastName,
+      inputs.phoneNumber,
+      inputs.address,
+      inputs.email,
+      inputs.userRole,
+      inputs.superVisor,
+      inputs.password
+    ));
+    setInputs({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      address: "",
+      superVisor: "",
+      userRole: "supervisor",
+    });
+    setSuccess(true);
   };
 
   useEffect(() => {
-    if (userInfo){ 
+    if (userInfo) {
       setSuccess(true);
-      navigate("/resident/homePage");}
-  }, [navigate, userInfo]);
-
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     setSuccess(true); // Updated success state when userInfo is available
-  //     setTimeout(() => {
-  //       navigate("/admin/AddSupervisor");
-  //     }, 3000); // Redirect after 3 seconds
-  //   }
-  // }, [navigate, userInfo]);
-
-
-  const [width] = UseMediaQuery();
-
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      dispatch(
-        registerSupervisor(
-          inputs.firstName,
-          inputs.lastName,
-          inputs.phoneNumber,
-          inputs.address,
-          inputs.email,
-          inputs.userRole,
-          inputs.superVisor,
-          inputs.password,
-        )
-      );
-      setInputs(initialInputs);
-      setSuccess(true);
-      // setTimeout(() => {
-      //   setSuccess(false);
-      // }, 3);
-  };
+      navigate("/resident/homePage");
+    }
+  }, [userInfo, navigate]);
 
   return (
-    <div>
-      {/* Success message */}
-      {success && (
-        <Message
-          severity="success"
-          message="Supervisor Registered!"
-          open={true}
-        />
-      )}
+    <>
       <AdminMenu />
       {loading && <Loader />}
-      {success && <Message severity="success" message="Supervisor Added" open={true}/>}
+      {success && <Message severity="success" message="Supervisor Registered!" open />}
+      {error && <Message severity="error" message={error} open />}
       <Grid
         container
-        spacing={2}
-        component="main"
+        justifyContent="center"
         sx={{
           flexGrow: 1,
           p: 3,
@@ -140,174 +92,122 @@ const AddSupervisor = () => {
           width: { sm: "calc(100% - 240px)" },
           margin: "0 0 0 17%",
         }}
-        justify-content="center"
-        align-items="center"
       >
         <Grid item>
-          {message && (
-            <Message severity="error" message={message} open={true} />
-          )}
-          {error && <Message severity="error" message={error} open={true} />}
-          <div>
-            <Grid container>
-              <Grid item>
-                <form onSubmit={handleSubmit}>
-                  <Box
-                    display="flex"
-                    flexDirection={"column"}
-                    alignItems="center"
-                    justifyContent={"center"}
-                    margin="auto"
-                    marginTop={0}
-                    padding={5}
-                    pt={1}
-                    borderRadius={5}
-                    style={{ backgroundColor: "white", height: 500 }}
-                  >
-                    <Typography
-                      variant="h4"
-                      textAlign={"center"}
-                      padding={1}
-                      sx={{
-                        color: "#283593",
-                        fontFamily: "Arizonia",
-                        marginTop: "1px",
-                      }}
-                    >
-                      Register Supervisor
-                    </Typography>
-                    <Grid container spacing={1} sx={{ marginTop: "1%" }}>
-                      <Grid item md={6}>
-                        <FormControl
-                          item
-                          sx={{ width: 215 }}
-                          variant="outlined"
-                        >
-                          <InputLabel htmlFor="firstName">
-                            First Name
-                          </InputLabel>
-                          <OutlinedInput
-                            id="firstName"
-                            value={inputs.firstName}
-                            onChange={handleChange}
-                            inputProps={{ "aria-label": "firstName" }}
-                            label="firstName"
-                            name="firstName"
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item md={6}>
-                        <FormControl sx={{ width: 210 }} variant="outlined">
-                          <InputLabel htmlFor="lastName">Last Name</InputLabel>
-                          <OutlinedInput
-                            id="lastName"
-                            value={inputs.lastName}
-                            onChange={handleChange}
-                            inputProps={{ "aria-label": "lastName" }}
-                            label="lastName"
-                            name="lastName"
-                          />
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    <FormControl
-                      sx={{ width: "99%", marginTop: "2%" }}
-                      variant="outlined"
-                    >
-                      <InputLabel htmlFor="phoneNumber">
-                        Phone Number
-                      </InputLabel>
-                      <OutlinedInput
-                        id="phoneNumber"
-                        value={inputs.phoneNumber}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": "phoneNumber" }}
-                        label="phoneNumber"
-                        name="phoneNumber"
-                      />
-                    </FormControl>
-                    <FormControl
-                      sx={{ width: "99%", marginTop: "2%" }}
-                      variant="outlined"
-                    >
-                      <InputLabel htmlFor="address">Address</InputLabel>
-                      <OutlinedInput
-                        id="address"
-                        value={inputs.address}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": "address" }}
-                        label="address"
-                        name="address"
-                      />
-                    </FormControl>
+          <form onSubmit={handleSubmit}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              margin="auto"
+              padding={5}
+              pt={1}
+              borderRadius={5}
+              sx={{ backgroundColor: "white", height: 500 }}
+            >
+              <Typography
+                variant="h4"
+                textAlign="center"
+                padding={1}
+                sx={{
+                  color: "#283593",
+                  fontFamily: "Arizonia",
+                }}
+              >
+                Register Supervisor
+              </Typography>
 
-                    <FormControl
-                      sx={{ width: "99%", marginTop: "2%" }}
-                      variant="outlined"
-                    >
-                      <InputLabel htmlFor="email">Email</InputLabel>
-                      <OutlinedInput
-                        id="email"
-                        value={inputs.email}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": "email" }}
-                        label="email"
-                        name="email"
-                      />
-                    </FormControl>
-                    <FormControl
-                      sx={{ width: "99%", marginTop: "2%" }}
-                      variant="outlined"
-                    >
-                      <InputLabel htmlFor="superVisor">Supervisor Role</InputLabel>
-                      <Select
-                        id="superVisor"
-                        value={inputs.superVisor}
-                        onChange={handleChange}
-                        label="superVisor"
-                        name="superVisor"
-                      >
-                        <MenuItem value="plumber">Civil</MenuItem>
-                        <MenuItem value="electrician">Electrical</MenuItem>
-                        <MenuItem value="carpenter">Carpenter</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="success"
-                      sx={{ width: "99%", marginTop: "2%" }}
-                    >
-                      {loading && <Loader />}Register
-                    </Button>
-                  </Box>
-                </form>
+              <Grid container spacing={1} sx={{ mt: 1 }}>
+                <Grid item md={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel htmlFor="firstName">First Name</InputLabel>
+                    <OutlinedInput
+                      id="firstName"
+                      name="firstName"
+                      value={inputs.firstName}
+                      onChange={handleChange}
+                      label="First Name"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item md={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel htmlFor="lastName">Last Name</InputLabel>
+                    <OutlinedInput
+                      id="lastName"
+                      name="lastName"
+                      value={inputs.lastName}
+                      onChange={handleChange}
+                      label="Last Name"
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
-          </div>
-        </Grid>
-        <Grid item md={6}>
-          <Grid container direction="row">
-            {/* {services && services.map(service => (<Grid item md={12} key={service.slug}>
-                            <Service serviceData={service} refresh={handleRefreshServices} />
-                        </Grid>))} */}
-          </Grid>
+
+              <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+                <InputLabel htmlFor="phoneNumber">Phone Number</InputLabel>
+                <OutlinedInput
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={inputs.phoneNumber}
+                  onChange={handleChange}
+                  label="Phone Number"
+                />
+              </FormControl>
+
+              <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+                <InputLabel htmlFor="address">Address</InputLabel>
+                <OutlinedInput
+                  id="address"
+                  name="address"
+                  value={inputs.address}
+                  onChange={handleChange}
+                  label="Address"
+                />
+              </FormControl>
+
+              <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+                <InputLabel htmlFor="email">Email</InputLabel>
+                <OutlinedInput
+                  id="email"
+                  name="email"
+                  value={inputs.email}
+                  onChange={handleChange}
+                  label="Email"
+                />
+              </FormControl>
+
+              <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+                <InputLabel htmlFor="superVisor">Supervisor Role</InputLabel>
+                <Select
+                  id="superVisor"
+                  name="superVisor"
+                  value={inputs.superVisor}
+                  onChange={handleChange}
+                  label="Supervisor Role"
+                >
+                  <MenuItem value="plumber">Civil</MenuItem>
+                  <MenuItem value="electrician">Electrical</MenuItem>
+                  <MenuItem value="carpenter">Carpenter</MenuItem>
+                </Select>
+              </FormControl>
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                fullWidth
+                sx={{ mt: 2 }}
+              >
+                {loading ? <Loader /> : "Register"}
+              </Button>
+            </Box>
+          </form>
         </Grid>
       </Grid>
-       
-    </div>
+    </>
   );
 };
 
 export default AddSupervisor;
-
-
-
-
-
-
-
-
-
-
-
