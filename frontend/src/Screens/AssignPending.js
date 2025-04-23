@@ -36,7 +36,7 @@ const formContainer = css`
 
 const pageWrapper = css`
   min-height: 100vh;
-  background: #f0f4f8;
+  background:  #D2FAFA;
   padding: 2rem 0;
 `;
 
@@ -108,7 +108,7 @@ const AssignPending = () => {
       </Dialog>
       <Box
         mx={4} display="flex" justifyContent="flex-end" alignItems="flex-end" position="absolute" right="0">
-        <Button onClick={handleFILTER} variant="contained" >FILTER</Button>
+        <Button onClick={handleFILTER} variant="contained" sx={{position: "fixed"}} >FILTER</Button>
       </Box>
 
       <Box css={formContainer}>

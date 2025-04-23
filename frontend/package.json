@@ -4,6 +4,10 @@
 
   "license": "UNLICENSED",
   "private": true,
+
+
+
+
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -25,6 +29,10 @@
     "web-vitals": "^2.1.4",
     "webfontloader": "^1.6.28"
   },
+
+
+
+  
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",

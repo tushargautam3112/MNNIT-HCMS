@@ -24,7 +24,7 @@ const Announcement = ({ date, id, children }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 800,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -60,7 +60,7 @@ const Announcement = ({ date, id, children }) => {
 
   const location = useLocation();
   return (
-    <Card sx={{ margin: "5% 3% 0 3%" }} variant="outlined" key={id}>
+    <Card sx={{ margin: "5% 3% 0 3%" }} variant="outlined" key={id} elevation={4}>
       {openMessage && (
         <Message
           severity="success"
@@ -107,23 +107,22 @@ const Announcement = ({ date, id, children }) => {
                       sx={{
                         textAlign: "center",
                         color: "#283593",
-                        fontFamily: "Arizonia",
                       }}
                     >
-                      UPDATE ANNOUNCEMENT
+                      Update Announcement
                     </Typography>
                     <TextField
                       value={update}
                       onChange={handleUpdate}
                       multiline
                       maxRows={4}
-                      sx={{ width: "35ch" }}
+                      sx={{ width: "100%", marginTop: "10px" }}
                     ></TextField>
                     <Button
                       variant="contained"
                       color="success"
                       onClick={handleUpdateAnnouncement}
-                      sx={{ marginTop: "10px", marginLeft: "70%" }}
+                      sx={{ marginTop: "10px", marginLeft: "42%" }}
                     >
                       UPDATE
                     </Button>

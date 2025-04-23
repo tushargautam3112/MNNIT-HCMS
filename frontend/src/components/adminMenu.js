@@ -1,207 +1,182 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import { useNavigate, Link } from "react-router-dom";
+
+import { useLocation } from "react-router-dom";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // optional for selected tab marker
+
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  Toolbar,
+  Typography,
+  Button,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Tooltip
+} from "@mui/material";
+
 import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import UpdateIcon from "@mui/icons-material/Update";
-import DeleteIcon from "@mui/icons-material/Delete";
 import MarkChatReadIcon from "@mui/icons-material/MarkChatRead";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import { Link } from "react-router-dom";
+
 import { logout } from "../actions/userActions";
-import { useNavigate } from "react-router-dom";
-import logoImage from  "../assets/logoImage.png"
+import logoImage from "../assets/logoImage.png";
+import mnnitLogo from "../assets/mnnitlogo.png";
 
 const drawerWidth = 240;
 
 function AdminMenu(props) {
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const handleLogOut = () => {
-    navigate("/login");
     dispatch(logout());
+    navigate("/login");
   };
 
   const navigateHomePage = () => {
     navigate("/resident/homePage");
   };
 
+
+  const drawerGreen = "#2e7d32";
+  const selectedBg = "#e8f5e9";
+
+  const NavLink = ({ to, icon, label }) => {
+    const location = useLocation();
+    const selected = location.pathname === to;
+
+    return (
+      <ListItemButton
+        component={Link}
+        to={to}
+        selected={selected}
+        sx={{
+          backgroundColor: selected ? selectedBg : "transparent",
+          borderLeft: selected ? `6px solid #3387DB` : "6px solid transparent",
+          "&:hover": {
+            backgroundColor: "#e8f5e9",
+          },
+        }}
+      >
+        <ListItemIcon sx={{ color: drawerGreen }}>{icon}</ListItemIcon>
+        <ListItemText
+          primary={label}
+          sx={{ color: selected ? "black" : "#444", fontWeight: selected ? 800 : 400 }}
+        />
+      </ListItemButton>
+    );
+  };
+
+
   const drawer = (
-    <div>
-      <Typography variant="h5" sx={{ marginLeft: "20px", marginTop: "35px", zIndex: "20" }}>
-        ADMIN
+    <Box sx={{ px: 1 }}>
+      <Typography
+        variant="h5"
+        sx={{
+          textAlign: "center",
+          mt: 2,
+          mb: 1,
+          fontWeight: "bold",
+          color: "#0047AB"
+        }}
+      >
+        <img src={mnnitLogo} alt="MNNIT Logo" style={{ height: "50px" }} />
       </Typography>
       <Divider />
-      <List>
-        {/* <ListItemButton>
-          <ListItemIcon>
-            <MarkChatReadIcon />
-          </ListItemIcon>
-          <Link
-            to="../admin/approveScreen"
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <ListItemText primary="Approve workers request" />
-          </Link>
-        </ListItemButton> */}
-
-        {userInfo.userRole !== "supervisor" && (
+      <List sx={{mt: 4}}>
+        {userInfo?.userRole !== "supervisor" && (
           <>
-            <ListItemButton>
-              <ListItemIcon>
-                <MarkChatReadIcon />
-              </ListItemIcon>
-              <Link
-                to="../admin/AddWorker"
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                <ListItemText primary="Add workers" />
-              </Link>
-            </ListItemButton>
-
-            <ListItemButton>
-              <ListItemIcon>
-                <GroupAddIcon />
-              </ListItemIcon>
-              <Link
-                to="../admin/AddSupervisor"
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                <ListItemText primary="Add Supervisor" />
-              </Link>
-            </ListItemButton>
+            <NavLink to="/admin/AddWorker" icon={<MarkChatReadIcon />} label="Add Workers" />
+            <NavLink to="/admin/AddSupervisor" icon={<GroupAddIcon />} label="Add Supervisor" />
           </>
         )}
-
-        <ListItemButton>
-          <ListItemIcon>
-            <AssignmentIcon />
-          </ListItemIcon>
-          <Link
-            to="../admin/AssignPending"
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <ListItemText primary="Assign pending complaints" />
-          </Link>
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon>
-            <UpdateIcon />
-          </ListItemIcon>
-          <Link
-            to="../admin/announcementScreen"
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <ListItemText primary="Announcements" />
-          </Link>
-        </ListItemButton>
-        {userInfo.userRole !== "supervisor" && (
-          <ListItemButton>
-            <ListItemIcon>
-              <SupportAgentIcon />
-            </ListItemIcon>
-            <Link
-              to="../admin/ServicesScreen"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <ListItemText primary="Standard Services" />
-            </Link>
-          </ListItemButton>
+        <NavLink to="/admin/AssignPending" icon={<AssignmentIcon />} label="Assign Complaints" />
+        <NavLink to="/admin/announcementScreen" icon={<UpdateIcon />} label="Announcements" />
+        {userInfo?.userRole !== "supervisor" && (
+          <NavLink to="/admin/ServicesScreen" icon={<SupportAgentIcon />} label="Standard Services" />
         )}
       </List>
-      {/* </Box> */}
-    </div>
+    </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
+        elevation={9}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
           backgroundColor: "#fff",
-          borderBottom: "#0047AB 3px solid",
-          color: "#0047AB ",
+          color: "#0047AB",
+          borderBottom: "3px solid #0047AB",
         }}
       >
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            flexGrow={1}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              flexGrow: 1
+            }}
             onClick={navigateHomePage}
           >
-            <img
-              src={logoImage}
-              alt="HCMS Logo"
-              style={{ maxHeight: "40px", marginRight: "10px", marginTop: "14px" }}
-            />
-            
-          </Typography>
-          <Button color="inherit" onClick={handleLogOut}>
+            <img src={logoImage} alt="HCMS Logo" style={{ height: "40px", marginRight: "12px" }} />
+          </Box>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleLogOut}
+            sx={{ fontWeight: 600 }}
+          >
             LOGOUT
           </Button>
         </Toolbar>
       </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
+
+      {/* Side Drawer */}
+      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="admin-nav">
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth }
           }}
         >
           {drawer}
@@ -210,32 +185,25 @@ function AdminMenu(props) {
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth }
           }}
           open
         >
           {drawer}
         </Drawer>
       </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
+
+      {/* Main Content Placeholder */}
+      <Box component="main" sx={{ flexGrow: 1, p: 2, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
         <Toolbar />
+        {/* actual content goes here */}
       </Box>
     </Box>
   );
 }
 
 AdminMenu.propTypes = {
-  window: PropTypes.func,
+  window: PropTypes.func
 };
 
 export default AdminMenu;

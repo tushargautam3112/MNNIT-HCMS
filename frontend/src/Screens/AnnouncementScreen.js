@@ -29,13 +29,12 @@ const formContainer = css`
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   max-width: 1000px;
-  max-width: 60%;
   margin: auto;
 `;
 
 const pageWrapper = css`
   min-height: 100vh;
- background: #f0f4f8;
+ background:  #D2FAFA;
   padding-top: 2rem;
 `;
 
@@ -84,7 +83,7 @@ const AnnouncementScreen = () => {
         >
           Announcements
         </Typography>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} elevation={8}>
           {/* LEFT SIDE - All Announcements */}
           <Grid item xs={12} md={7}>
             {loading ? (
@@ -108,7 +107,7 @@ const AnnouncementScreen = () => {
 
           {/* RIGHT SIDE - Create Announcement */}
           <Grid item xs={12} md={5}>
-            <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
+            <Paper elevation={3} sx={{ p: 4}}>
               <Typography
                 variant="h6"
                 sx={{ color: "#0047AB", textAlign: "center", mb: 2 }}
