@@ -53,7 +53,7 @@ function AdminMenu(props) {
 
   const drawer = (
     <div>
-      <Typography variant="h5" sx={{ marginLeft: "40px", marginTop: "35px" }}>
+      <Typography variant="h5" sx={{ marginLeft: "40px", marginTop: "35px", zIndex: "20" }}>
         ADMIN ROLE
       </Typography>
       <Divider />
