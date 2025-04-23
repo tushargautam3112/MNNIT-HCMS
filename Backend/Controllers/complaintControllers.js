@@ -4,10 +4,14 @@ import { ComplaintType, Status, AdminEmail } from "../Constants/Constants.js";
 import generateOTP from "../utils/generateOTP.js";
 import assignComplaint from "../utils/automaticAssignComplaint.js";
 import axios from "axios";
+import { logComplaintToExcel } from "../services/spreadsheet.js";
 
+// import complaint from "../logs"
 //@desc Create a new complaint
 //@route /api/complaints/create
 //@access Protected
+// Utility function to log complaint to Excel
+
 const createComplaint = expressAsyncHandler(async (req, res) => {
   const { complaintType } = req.body;
   const preparedData = {
@@ -23,6 +27,12 @@ const createComplaint = expressAsyncHandler(async (req, res) => {
   // await axios.post(`http://localhost:${process.env.PORT}/api/queue`, {
   //   complaintId: complaint._id,
   // });
+  try {
+    logComplaintToExcel(complaint);
+    console.log("Complain logged to Excel");
+  } catch (error) {
+    console.log(`Error getting logged: ${error.message}`);
+  }
   if (complaint) {
     res.status(201).json({
       id: complaint._id,
@@ -60,7 +70,7 @@ const deleteComplaint = expressAsyncHandler(async (req, res) => {
 
 const getForResident = expressAsyncHandler(async (req, res) => {
   const query = { createdBy: req.user.email };
-  
+
   if (Array.isArray(req.query.issueType)) {
     // console.log("Hi i am filtering complaints by department")
     query.issueType = { $in: req.query.issueType };
