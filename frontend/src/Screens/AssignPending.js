@@ -19,6 +19,28 @@ import { getComplaintsAdmin } from '../actions/complaintActions'
 import Loader from '../components/Loader'
 import { getWorkers } from '../actions/userActions';
 
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+const formContainer = css`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+`;
+
+const pageWrapper = css`
+  min-height: 100vh;
+  background: #f0f4f8;
+  padding-top: 2rem;
+`;
+
+
 const AssignPending = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -70,7 +92,7 @@ const AssignPending = () => {
   };
 
   return (
-    <div>
+    <div css={pageWrapper}>
       <AdminMenu />
       <Dialog open={open}>
         <DialogTitle>FILTER</DialogTitle>
@@ -85,15 +107,20 @@ const AssignPending = () => {
         </DialogActions>
       </Dialog>
       <Box
-        m={1} display="flex" justifyContent="flex-end" alignItems="flex-end" >
+        mx={4} display="flex" justifyContent="flex-end" alignItems="flex-end" position="absolute" right="0">
         <Button onClick={handleFILTER} variant="contained" >FILTER</Button>
       </Box>
 
-      <Typography variant="h4" sx={{ textAlign: "center", color: "#0047AB " }}>PENDING COMPLAINTS</Typography>
+      <Box css={formContainer}>
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{ mb: 3, color: "#3f51b5", fontWeight: 600 }}
+      >Pending Complaints</Typography>
       {loading && <Loader />}
       {userInfo.userRole === 'admin' && complaints && workers &&complaints.map(complaint => (<ComplaintAdmin complaintData={complaint} key={complaint.id} allWorkers={workers}/>))}
       {userInfo.userRole === 'supervisor' && complaints && workers &&complaints.map(complaint => ( userInfo.superVisor === complaint.issueType && <ComplaintAdmin userInfo={userInfo} complaintData={complaint} key={complaint.id} allWorkers={workers}/>))}
-
+      </Box>
     </div>
 
   )

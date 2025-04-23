@@ -56,7 +56,7 @@ const ComplaintAdmin = ({ complaintData, allWorkers }) => {
       )}
       <Card
         variant="outlined"
-        sx={{ margin: "2% 10% 2% 25%", maxWidth: "800px" }}
+        sx={{marginBottom: "13px"}}
       >
         <CardContent>
           <Typography>
