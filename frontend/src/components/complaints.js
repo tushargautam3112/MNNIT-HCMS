@@ -51,7 +51,7 @@ const Complaints = ({ complaintData }) => {
     )
 
   return (
-    <Card sx={{ margin: "5% 6% -3% 6%", maxWidth: 550, }}>
+    <Card sx={{ margin: "5% 6% -3% 6%", maxWidth: 650, }} variant="outlined">
       {success && <Message severity="success" open={true} message="Complaint Deleted" />}
       
       <CardContent>

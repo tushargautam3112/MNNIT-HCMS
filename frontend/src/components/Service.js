@@ -20,9 +20,9 @@ const Service = ({ serviceData, refresh }) => {
     return (
         <div>
             {success && <Message open={true} severity="success" message="Service Deleted" />}
-            <Card sx={{ margin: "2%" }} variant='outlined'>
+            <Card sx={{ margin: "1%" }} variant='outlined'>
                 <CardContent>
-                    <Grid container direction="row" spacing={2}>
+                    <Grid container direction="row" spacing={1}>
                         <Grid item md={12}>
                             {serviceData.description}
                         </Grid>
