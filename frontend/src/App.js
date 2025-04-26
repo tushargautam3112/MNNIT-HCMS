@@ -12,6 +12,7 @@ import AnnouncementScreen from './Screens/AnnouncementScreen';
 import ServicesScreen from './Screens/ServicesScreen'
 import AddSupervisor from "./Screens/AddSupervisor";
 import AddWorker from "./Screens/AddWorker";
+import HomeScreen from "./Screens/homeScreen"
 import './App.css'
 
 import UpdateProfileScreen from "./Screens/UpdateProfileScreen";
@@ -19,7 +20,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<LoginScreen />} />
+        <Route exact path="/" element={<HomeScreen />} />
         <Route exact path="/login" element={<LoginScreen />} />
         <Route exact path="/signup" element={<SignUpScreen />} />
         <Route exact path="/resident/homePage" element={<ResidentScreen />} />

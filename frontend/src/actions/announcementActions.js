@@ -7,15 +7,8 @@ const getAllAnnouncements = () => async (dispatch, getState) => {
             type: GET_ALL_ANNOUNCEMENT_REQUEST
         })
 
-        const { userLogin: { userInfo } } = getState()
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`
-            }
-        }
-
-        const { data } = await axios.get('http://localhost:5000/api/announcements/getAll', config)
+        const { data } = await axios.get('http://localhost:5000/api/announcements/getAll')
 
         dispatch({
             type: GET_ALL_ANNOUNCEMENT_SUCCESS,

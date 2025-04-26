@@ -81,7 +81,7 @@ const Announcement = ({ date, id, children }) => {
             </Typography>
           </Grid>
         </Grid>
-        {userInfo.userRole === "admin" &&
+        {userInfo && (userInfo.userRole === "admin" || userInfo.userRole === "supervisor")  &&
           location.pathname === "/admin/announcementScreen" && (
             <Grid container direction="row">
               <Divider flexItem={true} />

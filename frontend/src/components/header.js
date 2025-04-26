@@ -14,7 +14,7 @@ import {Select, MenuItem,FormControl,OutlinedInput,InputLabel } from '@mui/mater
 import { useState,useEffect } from 'react';
 import {createRecord} from '../actions/workerFormActions'
 import Message from '../components/Message'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getRoles } from '../actions/userRoleActions'
 import Announcement from "../components/Announcement";
 import { getAllAnnouncements } from "../actions/announcementActions";
@@ -74,7 +74,7 @@ export default function Header() {
   }
 
   const navigateHomePage = () => {
-    navigate('/resident/homePage')
+    userInfo ? navigate('/resident/homePage') : navigate('/')
   }
 
   const handleAdminPage = () => {
@@ -172,12 +172,16 @@ export default function Header() {
               style={{ maxHeight: "40px", marginRight: "10px", marginTop: "14px" }}
             />
             </Typography>
-            {(userInfo.userRole === 'resident') && <Button color="inherit" onClick={handlePrevComplain}>Complains</Button>}
-            {(userInfo.userRole === 'resident' || userInfo.userRole === 'supervisor') && <Button color="inherit" onClick={handleUpdateProfile}>Update Profile</Button>}
-            {(userInfo.userRole === 'admin' || userInfo.userRole === 'supervisor') && <Button color="inherit" onClick={handleAdminPage}>Dashboard</Button>}
-            {userInfo.userRole === 'resident' && <Button color="inherit" onClick={handleJoinUs}>Announcements</Button>}
+            {userInfo && (userInfo.userRole === 'resident') && <Button color="inherit" onClick={handlePrevComplain}>Complains</Button>}
+            {userInfo && (userInfo.userRole === 'resident' || userInfo.userRole === 'supervisor') && <Button color="inherit" onClick={handleUpdateProfile}>Update Profile</Button>}
+            {userInfo && (userInfo.userRole === 'admin' || userInfo.userRole === 'supervisor') && <Button color="inherit" onClick={handleAdminPage}>Dashboard</Button>}
+            {userInfo && userInfo.userRole === 'resident' && <Button color="inherit" onClick={handleJoinUs}>Announcements</Button>}
             
-            <Button color="inherit" onClick={handleLogOut}>LOGOUT</Button>
+            {userInfo && <Button color="inherit" onClick={handleLogOut}>LOGOUT</Button>}
+            {!userInfo && <Link to='/login'>
+              <Button sx={{color: "green"}}>LOGIN</Button>
+            </Link>}
+            {!userInfo && <Link to='/signup'><Button sx={{color: "green"}} color="inherit">SIGN UP</Button></Link>}
           </Toolbar>
         </AppBar>
       </Box>

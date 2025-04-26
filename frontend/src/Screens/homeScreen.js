@@ -30,47 +30,17 @@ import Header from "../components/header.js";
 import { green } from "@mui/material/colors";
 import logo192 from "../assets/complain.jpg";
 import { sx } from "@mui/system";
+import logoImage from  "../assets/mnnitlogo.png"
 
-const ResidentScreen = () => {
+const HomeScreen = () => {
   
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState("");
-  const [showConfirmPassword, setShowConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
-  const updateUserProfile = useSelector((state) => state.updateUserProfile);
-  const { loading, success } = updateUserProfile;
-
-  const userDetails = useSelector((state) => state.userDetails);
-  const { user } = userDetails;
 
   const Announcements = useSelector((state) => state.getAllAnnouncements);
   const { announcements } = Announcements;
 
-  useEffect(() => {
-    if (!userInfo) navigate("/login");
-    else if (!user.email) {
-      dispatch(getUserDetails());
-    } else {
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setPhoneNumber(user.phoneNumber);
-      setAddress(user.address);
-      setEmail(user.email);
-    }
-  }, [userInfo, navigate, user, dispatch]);
 
   useEffect(() => {
     if (!announcements) {
@@ -78,37 +48,19 @@ const ResidentScreen = () => {
     }
   }, [announcements, dispatch]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) setMessage("Passwords don't Match!!");
-    else {
-      dispatch(updateUserDetails({ phoneNumber, address, password }));
-    }
-  };
-
-  const handleClickShowPassword = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
-  const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassword((prevShowConfirmPassword) => !prevShowConfirmPassword);
-  };
-
-  const handlePreviousComplaints = () => {
-    navigate("/resident/complaints", { state: { st: true } });
-  };
-
   return (
     <div>
-      <Header />
+        <Header/>
       <Grid container spacing={2} justifyContent="center" sx={{backgroundImage: logo192}}>
+        
         <Grid item xs={5} md={2} lg={4}>
+            
           {/* Left Side */}
           <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 32}}>
             {/* <AccountCircleIcon sx={{ fontSize: 64,color: 'green', mr: 2 }} /> */}
             <Box>
-              <Typography variant="h4" sx={{ color: 'green', marginBottom: '8px' }}>Welcome </Typography>
-              <Typography variant="h4" sx={{backgroundColor: 'green', padding: '8px', color: 'white', display:"inline"}}>{`${user.firstName} ${user.lastName}`}</Typography>
+              <Typography variant="h4" sx={{ color: 'green' }}>Welcome </Typography>
+              {/* <Typography variant="h4" sx={{backgroundColor: 'green', padding: '6px', color: 'white', display:"inline"}}>{`${user.firstName} ${user.lastName}`</Typography> */}
               <Typography variant="h5" sx={{ color: 'green', marginTop:"10px" }}>to Hostel Complaint Management System of MNNIT</Typography>
 
               
@@ -131,4 +83,4 @@ const ResidentScreen = () => {
   );
 };
 
-export default ResidentScreen;
+export default HomeScreen;
