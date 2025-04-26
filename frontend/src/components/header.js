@@ -35,7 +35,7 @@ export default function Header() {
   },[])
 
   const handleLogOut = () => {
-    navigate('/login')
+    navigate('/')
     dispatch(logout())
   }
 
