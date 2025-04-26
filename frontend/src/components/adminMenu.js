@@ -20,7 +20,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -57,7 +57,6 @@ function AdminMenu(props) {
     navigate("/resident/homePage");
   };
 
-
   const drawerGreen = "#2e7d32";
   const selectedBg = "#e8f5e9";
 
@@ -81,12 +80,14 @@ function AdminMenu(props) {
         <ListItemIcon sx={{ color: drawerGreen }}>{icon}</ListItemIcon>
         <ListItemText
           primary={label}
-          sx={{ color: selected ? "black" : "#444", fontWeight: selected ? 800 : 400 }}
+          sx={{
+            color: selected ? "black" : "#444",
+            fontWeight: selected ? 800 : 400,
+          }}
         />
       </ListItemButton>
     );
   };
-
 
   const drawer = (
     <Box sx={{ px: 1 }}>
@@ -97,29 +98,52 @@ function AdminMenu(props) {
           mt: 2,
           mb: 1,
           fontWeight: "bold",
-          color: "#0047AB"
+          color: "#0047AB",
         }}
       >
         <img src={mnnitLogo} alt="MNNIT Logo" style={{ height: "50px" }} />
       </Typography>
       <Divider />
-      <List sx={{mt: 4}}>
+      <List sx={{ mt: 4 }}>
         {userInfo?.userRole !== "supervisor" && (
           <>
-            <NavLink to="/admin/AddWorker" icon={<MarkChatReadIcon />} label="Add Workers" />
-            <NavLink to="/admin/AddSupervisor" icon={<GroupAddIcon />} label="Add Supervisor" />
+            <NavLink
+              to="/admin/AddWorker"
+              icon={<MarkChatReadIcon />}
+              label="Add Workers"
+            />
+            <NavLink
+              to="/admin/AddSupervisor"
+              icon={<GroupAddIcon />}
+              label="Add Supervisor"
+            />
           </>
         )}
-        <NavLink to="/admin/AssignPending" icon={<AssignmentIcon />} label="Assign Complaints" />
-        <NavLink to="/admin/announcementScreen" icon={<UpdateIcon />} label="Announcements" />
+        {userInfo?.userRole === "supervisor" && (
+          <NavLink
+            to="/admin/AssignPending"
+            icon={<AssignmentIcon />}
+            label="Assign Complaints"
+          />
+        )}
+        <NavLink
+          to="/admin/announcementScreen"
+          icon={<UpdateIcon />}
+          label="Announcements"
+        />
         {userInfo?.userRole !== "supervisor" && (
-          <NavLink to="/admin/ServicesScreen" icon={<SupportAgentIcon />} label="Standard Services" />
+          <NavLink
+            to="/admin/ServicesScreen"
+            icon={<SupportAgentIcon />}
+            label="Standard Services"
+          />
         )}
       </List>
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -149,11 +173,15 @@ function AdminMenu(props) {
               display: "flex",
               alignItems: "center",
               cursor: "pointer",
-              flexGrow: 1
+              flexGrow: 1,
             }}
             onClick={navigateHomePage}
           >
-            <img src={logoImage} alt="HCMS Logo" style={{ height: "40px", marginRight: "12px" }} />
+            <img
+              src={logoImage}
+              alt="HCMS Logo"
+              style={{ height: "40px", marginRight: "12px" }}
+            />
           </Box>
           <Button
             variant="outlined"
@@ -167,7 +195,11 @@ function AdminMenu(props) {
       </AppBar>
 
       {/* Side Drawer */}
-      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="admin-nav">
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="admin-nav"
+      >
         <Drawer
           container={container}
           variant="temporary"
@@ -176,7 +208,10 @@ function AdminMenu(props) {
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth }
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -185,7 +220,10 @@ function AdminMenu(props) {
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth }
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -194,7 +232,14 @@ function AdminMenu(props) {
       </Box>
 
       {/* Main Content Placeholder */}
-      <Box component="main" sx={{ flexGrow: 1, p: 2, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 2,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
         <Toolbar />
         {/* actual content goes here */}
       </Box>
@@ -203,7 +248,7 @@ function AdminMenu(props) {
 }
 
 AdminMenu.propTypes = {
-  window: PropTypes.func
+  window: PropTypes.func,
 };
 
 export default AdminMenu;

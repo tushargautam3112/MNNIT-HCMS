@@ -1,26 +1,26 @@
-import React from 'react'
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import AdminMenu from '../components/adminMenu';
-import Checkbox from '@mui/material/Checkbox';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import { FormControl } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { getRoles } from '../actions/userRoleActions'
-import ComplaintAdmin from '../components/complaintAdmin';
-import { getComplaintsAdmin } from '../actions/complaintActions'
-import Loader from '../components/Loader'
-import { getWorkers } from '../actions/userActions';
+import React from "react";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import AdminMenu from "../components/adminMenu";
+import Checkbox from "@mui/material/Checkbox";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import { FormControl } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Box } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getRoles } from "../actions/userRoleActions";
+import ComplaintAdmin from "../components/complaintAdmin";
+import { getComplaintsAdmin } from "../actions/complaintActions";
+import Loader from "../components/Loader";
+import { getWorkers } from "../actions/userActions";
 
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 
 const formContainer = css`
   display: flex;
@@ -36,47 +36,45 @@ const formContainer = css`
 
 const pageWrapper = css`
   min-height: 100vh;
-  background:  #D2FAFA;
+  background: #d2fafa;
   padding: 2rem 0;
 `;
 
-
 const AssignPending = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const userLogin = useSelector(state => state.userLogin)
-  const { userInfo } = userLogin
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-  const Roles = useSelector(state => state.getRoles)
-  const { roles } = Roles
+  const Roles = useSelector((state) => state.getRoles);
+  const { roles } = Roles;
 
-  const { loading, complaints } = useSelector(state => state.getComplaintsAdmin)
+  const { loading, complaints } = useSelector(
+    (state) => state.getComplaintsAdmin
+  );
 
-  const { workers } = useSelector(state => state.getWorkers)
+  const { workers } = useSelector((state) => state.getWorkers);
 
   useEffect(() => {
-    if (!userInfo)
-      navigate('login')
-    if (!roles)
-      dispatch(getRoles(['admin', 'resident', 'supervisor']))
+    if (!userInfo) navigate("login");
+    if (!roles) dispatch(getRoles(["admin", "resident", "supervisor"]));
     if (!complaints)
-      dispatch(getComplaintsAdmin(['Pending'], [], ['Custom','Standard']))
-    if (!workers)
-      dispatch(getWorkers(['admin', 'resident', 'supervisor']))
-  }, [])
+      dispatch(getComplaintsAdmin(["Pending"], [], ["Custom", "Standard"]));
+    if (!workers) dispatch(getWorkers(["admin", "resident", "supervisor"]));
+  }, []);
 
   const [open, setOpen] = React.useState(false);
 
-  const [departmentChecked, setDepartmentChecked] = useState([])
+  const [departmentChecked, setDepartmentChecked] = useState([]);
 
   const handleChecked = (event, key) => {
     if (event.target.checked) {
-      setDepartmentChecked(prevState => [...prevState, key])
+      setDepartmentChecked((prevState) => [...prevState, key]);
     } else if (!event.target.checked) {
-      setDepartmentChecked(prevstate => prevstate.filter(s => s !== key))
+      setDepartmentChecked((prevstate) => prevstate.filter((s) => s !== key));
     }
-  }
+  };
 
   const handleFILTER = () => {
     setOpen(true);
@@ -87,8 +85,10 @@ const AssignPending = () => {
   };
 
   const handleSubmit = () => {
-    handleClose()
-    dispatch(getComplaintsAdmin(['Pending'], departmentChecked, ['Custom','Standard']))
+    handleClose();
+    dispatch(
+      getComplaintsAdmin(["Pending"], departmentChecked, ["Custom", "Standard"])
+    );
   };
 
   return (
@@ -98,33 +98,74 @@ const AssignPending = () => {
         <DialogTitle>FILTER</DialogTitle>
         <DialogContent>
           <FormControl>
-            {roles && roles.map(role => <FormControlLabel value={role.slug} control={<Checkbox onChange={e => handleChecked(e, role.slug)} />} label={role.name} key={role._id} />)}
+            {roles &&
+              roles.map((role) => (
+                <FormControlLabel
+                  value={role.slug}
+                  control={
+                    <Checkbox onChange={(e) => handleChecked(e, role.slug)} />
+                  }
+                  label={role.name}
+                  key={role._id}
+                />
+              ))}
           </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit} >Filter</Button>
+          <Button onClick={handleSubmit}>Filter</Button>
         </DialogActions>
       </Dialog>
       <Box
-        mx={4} display="flex" justifyContent="flex-end" alignItems="flex-end" position="absolute" right="0">
-        <Button onClick={handleFILTER} variant="contained" sx={{position: "fixed"}} >FILTER</Button>
+        mx={4}
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+        position="absolute"
+        right="0"
+      >
+        <Button
+          onClick={handleFILTER}
+          variant="contained"
+          sx={{ position: "fixed" }}
+        >
+          FILTER
+        </Button>
       </Box>
 
       <Box css={formContainer}>
-      <Typography
-        variant="h4"
-        align="center"
-        sx={{ mb: 3, color: "#3f51b5", fontWeight: 600 }}
-      >Pending Complaints</Typography>
-      {loading && <Loader />}
-      {userInfo.userRole === 'admin' && complaints && workers &&complaints.map(complaint => (<ComplaintAdmin complaintData={complaint} key={complaint.id} allWorkers={workers}/>))}
-      {userInfo.userRole === 'supervisor' && complaints && workers &&complaints.map(complaint => ( userInfo.superVisor === complaint.issueType && <ComplaintAdmin userInfo={userInfo} complaintData={complaint} key={complaint.id} allWorkers={workers}/>))}
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{ mb: 3, color: "#3f51b5", fontWeight: 600 }}
+        >
+          Pending Complaints
+        </Typography>
+        {loading && <Loader />}
+        {userInfo.userRole === "admin" &&
+          complaints &&
+          workers &&
+          complaints.map((complaint) => (
+            <ComplaintAdmin
+              complaintData={complaint}
+              key={complaint.id}
+              allWorkers={workers}
+            />
+          ))}
+        {userInfo.userRole === "supervisor" &&
+          complaints &&
+          workers &&
+          complaints.map((complaint) => (
+            <ComplaintAdmin
+              userInfo={userInfo}
+              complaintData={complaint}
+              key={complaint.id}
+              allWorkers={workers}
+            />
+          ))}
       </Box>
     </div>
+  );
+};
 
-  )
-}
-
-
-export default AssignPending
+export default AssignPending;
