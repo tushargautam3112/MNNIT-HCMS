@@ -150,7 +150,7 @@ function AdminMenu(props) {
       <CssBaseline />
       <AppBar
         position="fixed"
-        elevation={9}
+        elevation={6}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },

@@ -148,7 +148,6 @@ export default function Header() {
             padding={1}
             sx={{
               color: "#283593",
-              fontFamily: "Arizonia",
               marginBottom: 0,
               marginTop: "1px",
             }}
@@ -163,7 +162,7 @@ export default function Header() {
         </DialogActions>
       </Dialog>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="fixed" elevation={0} style={{ background: '#fff', borderBottom: '#388e3c 3px solid', color: '#388e3c' }}>
+        <AppBar position="fixed" elevation={3} style={{ background: '#fff', borderBottom: '#388e3c 3px solid', color: '#388e3c' }}>
           <Toolbar>
 
             <Typography variant="h5" component="div" sx={{ flexGrow: 1, marginLeft: "10px" }} onClick={navigateHomePage}>

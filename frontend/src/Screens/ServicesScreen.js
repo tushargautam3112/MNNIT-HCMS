@@ -125,7 +125,7 @@ const ServicesScreen = () => {
 
       {/* Main Grid Layout */}
       <div css={formContainer}>
-      <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0047AB", mb: 2, textAlign: "center", fontWeight:"bold" }}>
+      <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0047AB", mb: 5, textAlign: "center", fontWeight:"bold" }}>
               Common Services
             </Typography>
         <Grid container spacing={4}>

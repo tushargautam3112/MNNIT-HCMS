@@ -137,6 +137,8 @@ import logo192 from "../assets/complain.jpg";
 import { sx } from "@mui/system";
 
 const ResidentScreen = () => {
+  
+  
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -224,7 +226,10 @@ const ResidentScreen = () => {
         </Grid>
         <Grid item xs={8} md={6} lg={4} sx={{marginTop: 20}}>
           {/* Right Side */}
-          <img src={logo192} alt="Image Description" sx={{ width: "100%"}} />
+          <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0047AB", mt:"20px", textAlign: "center", }}>
+              Announcements
+            </Typography>
+          {announcements && announcements.map(announcement => <Announcement date={announcement.date.split("T")[0]} key={announcement._id}>{announcement.description}</Announcement>)}
         </Grid>
       </Grid>
     </div>

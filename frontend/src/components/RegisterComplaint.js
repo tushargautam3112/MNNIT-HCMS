@@ -139,7 +139,7 @@ const {success} = Complaint
       {success && <Message severity="success" message="Complaint Registerd!" open={true}/>}
       <Paper
         square
-        elevation={0}
+        elevation={1}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -150,7 +150,7 @@ const {success} = Complaint
       >
         <Typography>{steps[activeStep].label}</Typography>
       </Paper>
-      <Box sx={{ height: 320, width: '99%', p: 2 }}>
+      <Box sx={{ height: 320, width: '300px', p: 2 }}>
         {steps[activeStep].description}
       </Box>
       <MobileStepper

@@ -15,6 +15,30 @@ import { getComplaints } from '../actions/complaintActions.js';
 import Loader from '../components/Loader.js'
 import { useNavigate } from 'react-router-dom';
 
+
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+const formContainer = css`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  padding-bottom: 80px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  margin: 100px auto;
+  transform: translateX(-60px)
+`;
+
+const pageWrapper = css`
+  min-height: 100vh;
+  background:  #D2FAFA;
+  padding-top: 1.8rem;
+`;
+
 const ComplaintScreen = () => {
   const [filters, setFilters] = useState([]);
 
@@ -68,29 +92,27 @@ const ComplaintScreen = () => {
 
 
   return (
-    <div>
+    <div css={pageWrapper}>
       <Header />
-      <Grid container direction="row" spacing={2} marginLeft="2px">
-        <Grid item xs={2} sx={{ margin: "5% 0 0 2%", height: '88vh' }}>
+      <Grid container direction="row" spacing={2} marginLeft="2px" sx={{ background:"#D2FAFA"}} >
+        <Grid item xs={2} sx={{ margin: "0 0 0 0", height: '100vh', background: "white", position: "fixed" }} >
           <Typography
             variant="h5"
-            padding={1}
             sx={{
               color: "#283593",
-              fontFamily: "Arizonia",
               marginBottom: 0,
-              marginTop: "1px",
+              margin: "70px 0 10px 10px",
+              background:"white"
             }}
           >FILTER</Typography>
           <Typography variant="body"
             sx={{
-              fontFamily: "Arizonia",
               marginBottom: 0,
               marginTop: "10px",
             }}>
             STATUS :
           </Typography>
-          <FormControl sx={{ marginTop: "5%" }}>
+          <FormControl>
             <FormControlLabel value="Pending" control={<Checkbox onChange={e => handleChange(e)} />} label="Pending" />
 
             <FormControlLabel value="Assigned" control={<Checkbox onChange={e => handleChange(e)} />} label="Assigned" />
@@ -106,16 +128,19 @@ const ComplaintScreen = () => {
             }}>
             DEPARTMENT :
           </Typography>
+          <Divider/>
           {roles && roles.map(role => <FormControlLabel value={role.slug} control={<Checkbox onChange={e => handleChecked(e, role.slug)} />} label={role.name} key={role._id} />)}
           <Button color="success" onClick={applyFilter} variant="contained">APPLY FILTER</Button>
         </Grid>
         <Divider orientation="vertical" flexItem={true} />
-        <Grid item xs={6} sx={{ textAlign: "center", margin: "5% 0 5% 0", }}>
+        <Grid css={formContainer} item sx={{ textAlign: "center", background: "white" }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0047AB", mt:"20px", textAlign: "center", }}>
+              Your Complaints
+            </Typography>
           {loading && <Loader />}
           {!loading && complaints && complaints.map(complaint => (<Complaints complaintData={complaint} key={complaint.id}/>))}
         </Grid>
-        <Divider orientation="vertical" flexItem={true} />
-        <Grid item md={3} sx={{ margin: "6% 2% 0 2%" }}>
+        <Grid item sx={{ margin: "6% 2% 0 2%" , background: "white", position:"fixed", borderRadius: "20px" ,right:0, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)"}}>
           <DynamicFeedIcon sx={{ margin: "0 45%" }} fontSize="large" />
           <Typography
             variant="h5"
@@ -123,7 +148,6 @@ const ComplaintScreen = () => {
             padding={1}
             sx={{
               color: "#283593",
-              fontFamily: "Arizonia",
             }}
           >
             Register a Complaint
