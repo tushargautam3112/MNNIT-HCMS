@@ -30,6 +30,7 @@ import Header from "../components/header.js";
 import { green } from "@mui/material/colors";
 import logo192 from "../assets/complain.jpg";
 import { sx } from "@mui/system";
+import logoImage from  "../assets/mnnitlogo.png"
 
 const ResidentScreen = () => {
   
@@ -102,11 +103,12 @@ const ResidentScreen = () => {
     <div>
       <Header />
       <Grid container spacing={2} justifyContent="center" sx={{backgroundImage: logo192}}>
-        <Grid item xs={5} md={2} lg={4}>
+        <Grid item xs={5} md={2} lg={4} sx={{marginTop: 26}}>
           {/* Left Side */}
-          <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 32}}>
+          <img src={logoImage} width={300} alt='MNNIT'/>
+          <Box sx={{ display: 'flex', alignItems: 'center'}}>
             {/* <AccountCircleIcon sx={{ fontSize: 64,color: 'green', mr: 2 }} /> */}
-            <Box>
+            <Box sx={{marginTop: "35px"}}>
               <Typography variant="h4" sx={{ color: 'green', marginBottom: '8px' }}>Welcome </Typography>
               <Typography variant="h4" sx={{backgroundColor: 'green', padding: '8px', color: 'white', display:"inline"}}>{`${user.firstName} ${user.lastName}`}</Typography>
               <Typography variant="h5" sx={{ color: 'green', marginTop:"10px" }}>to Hostel Complaint Management System of MNNIT</Typography>

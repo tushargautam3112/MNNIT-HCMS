@@ -53,12 +53,14 @@ const HomeScreen = () => {
         <Header/>
       <Grid container spacing={2} justifyContent="center" sx={{backgroundImage: logo192}}>
         
-        <Grid item xs={5} md={2} lg={4}>
+        <Grid item xs={5} md={2} lg={4}  sx={{marginTop: 28}}>
+            
             
           {/* Left Side */}
-          <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 32}}>
+          <img src={logoImage} width={300} alt='MNNIT'/>
+          <Box sx={{ display: 'flex', alignItems: 'center',}}>
             {/* <AccountCircleIcon sx={{ fontSize: 64,color: 'green', mr: 2 }} /> */}
-            <Box>
+            <Box sx={{marginTop: "30px"}}>
               <Typography variant="h4" sx={{ color: 'green' }}>Welcome </Typography>
               {/* <Typography variant="h4" sx={{backgroundColor: 'green', padding: '6px', color: 'white', display:"inline"}}>{`${user.firstName} ${user.lastName}`</Typography> */}
               <Typography variant="h5" sx={{ color: 'green', marginTop:"10px" }}>to Hostel Complaint Management System of MNNIT</Typography>
