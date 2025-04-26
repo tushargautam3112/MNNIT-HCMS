@@ -8,7 +8,7 @@ Now students can track their previous complaints and create a new complaint by v
 
 ![login screen](https://github.com/anjali726/Team-28-Mini-Project/assets/113389230/d8804337-2f4b-498d-b4da-05f614920d16)
 
-Students can login and create there complaint. Is also contain features like filtering, viewing past complaints, updating profile and many more.
+Students can login and create there complaint. Is also contain features like filtering, viewing past complaints, updating profile and many more..
 
 ![Complaint box](https://github.com/anjali726/Team-28-Mini-Project/assets/113389230/88bf9cea-5742-49eb-8cae-8870f4742e81)
 
