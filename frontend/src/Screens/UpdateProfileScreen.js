@@ -1,215 +1,153 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Button,
-  Typography, InputLabel, OutlinedInput, InputAdornment, IconButton, Divider
+  Grid, Box, Typography, Button, InputLabel, OutlinedInput,
+  FormControl, InputAdornment, IconButton, Divider
 } from "@mui/material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Grid from "@mui/material/Grid";
-import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import FormControl from '@mui/material/FormControl';
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Loader from '../components/Loader'
-import Message from '../components/Message'
+
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+import Header from "../components/header";
+
 import { updateUserDetails, getUserDetails } from "../actions/userActions";
-import Announcement from "../components/Announcement";
 import { getAllAnnouncements } from "../actions/announcementActions";
-import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
-import RegisterComplaint from "../components/RegisterComplaint";
-import Header from '../components/header.js';
-import Box from "@mui/material/Box";
 
 import logo192 from "../assets/student.jpg";
+
 const UpdateProfileScreen = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
-  const [address, setAddress] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [showPassword, setShowPassword] = useState("")
-  const [showConfirmPassword, setShowConfirmPassword] = useState("")
-  const [message, setMessage] = useState("")
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const userLogin = useSelector(state => state.userLogin)
-  const { userInfo } = userLogin
-
-  const updateUserProfile = useSelector(state => state.updateUserProfile)
-  const { loading, success } = updateUserProfile
-
-  const userDetails = useSelector(state => state.userDetails)
-  const { user } = userDetails
-
-  const Announcements = useSelector(state => state.getAllAnnouncements)
-  const { announcements } = Announcements
+  const { userInfo } = useSelector(state => state.userLogin);
+  const { loading, success } = useSelector(state => state.updateUserProfile);
+  const { user } = useSelector(state => state.userDetails);
+  const { announcements } = useSelector(state => state.getAllAnnouncements);
 
   useEffect(() => {
-    if (!userInfo)
-      navigate('/login')
-    else if (!user.email) {
-      dispatch(getUserDetails())
+    if (!userInfo) {
+      navigate('/login');
+    } else if (!user.email) {
+      dispatch(getUserDetails());
     } else {
-      setFirstName(user.firstName)
-      setLastName(user.lastName)
-      setPhoneNumber(user.phoneNumber)
-      setAddress(user.address)
-      setEmail(user.email)
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setPhoneNumber(user.phoneNumber);
+      setAddress(user.address);
+      setEmail(user.email);
     }
-  }, [userInfo, navigate, user, dispatch])
+  }, [userInfo, navigate, user, dispatch]);
 
   useEffect(() => {
     if (!announcements) {
-      dispatch(getAllAnnouncements())
+      dispatch(getAllAnnouncements());
     }
-  }, [announcements, dispatch])
+  }, [announcements, dispatch]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    if (password !== confirmPassword)
-      setMessage("Passwords don't Match!!")
-    else {
-      dispatch(updateUserDetails({ phoneNumber, address, password }))
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setMessage("Passwords don't match!");
+    } else {
+      dispatch(updateUserDetails({ phoneNumber, address, password }));
     }
   };
 
-  const handleClickShowPassword = () => {
-    setShowPassword(prevShowPassword => !prevShowPassword)
-  };
-
-  const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassword(prevShowConfirmPassword => !prevShowConfirmPassword)
-  };
-
-  const handlePreviousComplaints = () => {
-    navigate('/resident/complaints',{state:{ st:true}})
-  }
+  const toggleShowPassword = () => setShowPassword(prev => !prev);
+  const toggleShowConfirmPassword = () => setShowConfirmPassword(prev => !prev);
 
   return (
-    <div>
+    <>
       <Header />
-      
-      {message && <Message severity="error" message={message} open={true} />}
-      {success && <Message severity="success" message="Profile Updated" open={true} />}
-      <Grid container direction="row" spacing={2}>
-        <Grid item xs md={4.5} sx={{ textAlign: "center", margin: "6% 2% 0 2%" }}>
-        <Box border={1} borderRadius={4} borderColor={'green'} p={2}>
-          <div>
-            <AccountCircleIcon fontSize="large" />
-          </div>
-          <form onSubmit={handleSubmit}>
-            <Typography
-              variant="h5"
-              textAlign={"center"}
-              padding={1}
-              sx={{
-                color: "#283593",
-                fontFamily: "Arizonia",
-                marginBottom: 0,
-                marginTop: "1px",
-              }}
-            >
-              PROFILE
-            </Typography>
 
-            <Grid container spacing={.5} style={{ marginTop: "5px" }}>
-              <Grid item md={6}>
-                <FormControl variant="outlined">
-                  <InputLabel htmlFor="firstName">First Name</InputLabel>
-                  <OutlinedInput
-                    id="firstName"
-                    value={firstName}
-                    disabled
-                    inputProps={{ "aria-label": "firstName" }}
-                    label="firstName"
-                    name="firstName"
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item md={6}>
-                <FormControl variant="outlined">
-                  <InputLabel htmlFor="lastName">Last Name</InputLabel>
-                  <OutlinedInput
-                    id="lastName"
-                    value={lastName}
-                    disabled
-                    inputProps={{ "aria-label": "lastName" }}
-                    label="lastName"
-                    name="lastName"
-                  />
-                </FormControl>
-              </Grid>
+      {message && <Message severity="error" message={message} open />}
+      {success && <Message severity="success" message="Profile Updated" open />}
 
-              <FormControl
-                sx={{ width: "100%", marginTop: "3%" }}
-                variant="outlined"
+      <Grid container sx={{ padding: 2 }}>
+        {/* Left Side Form */}
+        <Grid item xs={12} md={4} mt={12} ml={14}>
+          <Box border={1} borderColor="green" borderRadius={4} p={3}>
+            <Box textAlign="center" mb={2}>
+              <AccountCircleIcon fontSize="large" />
+              <Typography
+                variant="h5"
+                sx={{ color: "#283593", fontFamily: "Arizonia", mt: 1 }}
               >
-                <InputLabel htmlFor="phoneNumber">Phone Number</InputLabel>
-                <OutlinedInput
-                  id="phoneNumber"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  inputProps={{ "aria-label": "phoneNumber" }}
-                  label="phoneNumber"
-                  name="phoneNumber"
-                />
-              </FormControl>
-              <FormControl
-                sx={{ width: "100%", marginTop: "3%" }}
-                variant="outlined"
-              >
-                <InputLabel htmlFor="address">Address</InputLabel>
-                <OutlinedInput
-                  id="address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  inputProps={{ "aria-label": "address" }}
-                  label="address"
-                  name="address"
-                />
-              </FormControl>
-              <FormControl variant="outlined" sx={{ width: "100%", marginTop: "3%" }}>
-                <InputLabel htmlFor="email">Email</InputLabel>
-                <OutlinedInput
-                  id="email"
-                  value={email}
-                  disabled
-                  inputProps={{ "aria-label": "email" }}
-                  label="email"
-                  name="email"
-                />
-              </FormControl>
-              <Grid container spacing={1} sx={{ marginTop: "1%" }}>
-                <Grid item md={6}>
-                  <FormControl variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password">
-                      Password
-                    </InputLabel>
+                PROFILE
+              </Typography>
+            </Box>
+
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>First Name</InputLabel>
+                    <OutlinedInput value={firstName} disabled label="First Name" />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Last Name</InputLabel>
+                    <OutlinedInput value={lastName} disabled label="Last Name" />
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Phone Number</InputLabel>
                     <OutlinedInput
-                      id="outlined-adornment-password"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      label="Phone Number"
+                    />
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Address</InputLabel>
+                    <OutlinedInput
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      label="Address"
+                    />
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Email</InputLabel>
+                    <OutlinedInput value={email} disabled label="Email" />
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Password</InputLabel>
+                    <OutlinedInput
                       type={showPassword ? "text" : "password"}
-                      onChange={(e) => setPassword(e.target.value)}
-                      name="password"
                       value={password}
-                      required={true}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
                       endAdornment={
                         <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
+                          <IconButton onClick={toggleShowPassword} edge="end">
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
                       }
@@ -217,74 +155,47 @@ const UpdateProfileScreen = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item md={6}>
-                  <FormControl variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-Confirmpassword">
-                      Cnfm Password
-                    </InputLabel>
+
+                <Grid item xs={6}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Confirm Password</InputLabel>
                     <OutlinedInput
-                      id="outlined-adornment-Confirmpassword"
                       type={showConfirmPassword ? "text" : "password"}
-                      onChange={e => setConfirmPassword(e.target.value)}
-                      name="confirmPassword"
                       value={confirmPassword}
-                      required={true}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
                       endAdornment={
                         <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowConfirmPassword}
-                            edge="end"
-                          >
-                            {showConfirmPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
+                          <IconButton onClick={toggleShowConfirmPassword} edge="end">
+                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
                       }
-                      label="confirmPassword"
+                      label="Confirm Password"
                     />
                   </FormControl>
                 </Grid>
+
+                <Grid item xs={12}>
+                  <Button type="submit" variant="contained" color="success" fullWidth sx={{ mt: 2 }}>
+                    {loading && <Loader />}
+                    Update Information
+                  </Button>
+                </Grid>
               </Grid>
-              <Button
-                type="submit"
-                variant="contained" color="success"
-                sx={{
-                  margin: "5%",
-                  width: "100%",
-                }}
-              >
-                {loading && <Loader />}Update Information
-              </Button>
-            </Grid>
-          </form>
-        
-          </Box>
-        </Grid>
-      
-
-
-        <Grid item xs={12} md={6}>
-          {/* Right Side: Image */}
-          <Box display="flex" justifyContent="flex-end" alignItems="flex-end" height="100%">
-            <img src={logo192} alt="Profile" style={{ width: "50%" }} />
+            </form>
           </Box>
         </Grid>
 
+        {/* Right Side Image */}
+        <Grid item xs={12} md={7} display="flex" justifyContent="center" alignItems="center">
+          <Box>
+            <img src={logo192} alt="Profile" style={{ width: "100%", maxWidth: "700px" }} />
+          </Box>
+        </Grid>
       </Grid>
-    </div>
+    </>
   );
 };
 
 export default UpdateProfileScreen;
-
-
-
-
-
-
-
-

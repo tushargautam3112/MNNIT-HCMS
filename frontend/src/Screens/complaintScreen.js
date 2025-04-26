@@ -62,13 +62,13 @@ const ComplaintScreen = () => {
     } else if (!event.target.checked) {
       setFilters(prevstate => prevstate.filter(s => s !== event.target.value))
     }
-    
+
   }
 
   const applyFilter = () => {
     dispatch(getComplaints(filters, departmentChecked))
   }
-  
+
   const [departmentChecked, setDepartmentChecked] = useState([])
 
   const handleChecked = (event, key) => {
@@ -94,23 +94,22 @@ const ComplaintScreen = () => {
   return (
     <div css={pageWrapper}>
       <Header />
-      <Grid container direction="row" spacing={2} marginLeft="2px" sx={{ background:"#D2FAFA"}} >
-        <Grid item xs={2} sx={{ margin: "0 0 0 0", height: '100vh', background: "white", position: "fixed" }} >
+      <Grid container direction="row" spacing={2} marginLeft="2px" sx={{ background: "#D2FAFA" }} >
+        <Grid item xs={2} sx={{ height: '100vh', background: "white", position: "fixed", }} >
           <Typography
             variant="h5"
             sx={{
               color: "#283593",
-              marginBottom: 0,
-              margin: "70px 0 10px 10px",
-              background:"white"
+              marginTop: "70px",
+              background: "white"
             }}
           >FILTER</Typography>
-          <Typography variant="body"
+          <Typography
             sx={{
               marginBottom: 0,
               marginTop: "10px",
             }}>
-            STATUS :
+            STATUS :<br />
           </Typography>
           <FormControl>
             <FormControlLabel value="Pending" control={<Checkbox onChange={e => handleChange(e)} />} label="Pending" />
@@ -119,28 +118,23 @@ const ComplaintScreen = () => {
 
             <FormControlLabel value="Solved" control={<Checkbox onChange={e => handleChange(e)} />} label="Solved" />
           </FormControl>
+          <br/><br/>
+          <Typography>
 
-          <Typography variant="body"
-            sx={{
-              fontFamily: "Arizonia",
-              marginBottom: 0,
-              marginTop: "1px",
-            }}>
-            DEPARTMENT :
+            DEPARTMENT:
           </Typography>
-          <Divider/>
           {roles && roles.map(role => <FormControlLabel value={role.slug} control={<Checkbox onChange={e => handleChecked(e, role.slug)} />} label={role.name} key={role._id} />)}
           <Button color="success" onClick={applyFilter} variant="contained">APPLY FILTER</Button>
         </Grid>
         <Divider orientation="vertical" flexItem={true} />
         <Grid css={formContainer} item sx={{ textAlign: "center", background: "white" }}>
-        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0047AB", mt:"20px", textAlign: "center", }}>
-              Your Complaints
-            </Typography>
+          <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0047AB", mt: "20px", textAlign: "center", }}>
+            Your Complains
+          </Typography>
           {loading && <Loader />}
-          {!loading && complaints && complaints.map(complaint => (<Complaints complaintData={complaint} key={complaint.id}/>))}
+          {!loading && complaints && complaints.map(complaint => (<Complaints complaintData={complaint} key={complaint.id} />))}
         </Grid>
-        <Grid item sx={{ margin: "6% 2% 0 2%" , background: "white", position:"fixed", borderRadius: "20px" ,right:0, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)"}}>
+        <Grid item sx={{ margin: "6% 2% 0 2%", background: "white", position: "fixed", borderRadius: "20px", right: 0, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)" }}>
           <DynamicFeedIcon sx={{ margin: "0 45%" }} fontSize="large" />
           <Typography
             variant="h5"

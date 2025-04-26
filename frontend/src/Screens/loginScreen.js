@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import Header from "../components/header";
 
 const LoginScreen = () => {
   const [inputs, setInputs] = useState({
@@ -62,6 +63,8 @@ const LoginScreen = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div style={{ backgroundColor: "#D2FAFA", height: "100vh" }}>
       {error && <Message severity="error" message={error} open={true} />}
       <Grid container>
@@ -74,7 +77,7 @@ const LoginScreen = () => {
               alignItems="center"
               justifyContent="center"
               margin="auto"
-              marginTop={width > 1000 ? "12%" : "20%"}
+              marginTop={"20%"}
               padding={5}
               borderRadius={2}
               bgcolor="white"
@@ -160,6 +163,7 @@ const LoginScreen = () => {
         )}
       </Grid>
     </div>
+    </>
   );
 };
 
